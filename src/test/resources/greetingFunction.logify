@@ -1,0 +1,8 @@
+function greeting(name, message) {
+  x = "Hi,";
+  x = x ++ " my name is " ++ name ++ ".";
+  print(x);
+  print(message);
+}
+
+greeting("Albert", "How are you?");

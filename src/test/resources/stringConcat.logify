@@ -1,0 +1,4 @@
+x = "woof ";
+y = "Dog goes " ++ (x * 2);
+
+print(y);
