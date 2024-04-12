@@ -18,9 +18,10 @@ program returns [Expression expr]
 statement returns [Expression expr]
     : a=assignment {$expr = $a.expr;}
     | f=forLoop {$expr = $f.expr;}
+    | wl=whileBlock {$expr = $wl.expr;}
     | fd=functionDef {$expr = $fd.expr;}
     | ifs=ifBlock {$expr = $ifs.expr;}
-    | ex=expression SEMI {$expr = $ex.expr;}
+    | ex=expression SEMI? {$expr = $ex.expr;}
     | pr=print SEMI? {$expr = $pr.expr;}
     | fc=functionCall SEMI? {$expr = $fc.expr;}
     ;
@@ -47,6 +48,9 @@ expression returns [Expression expr]
     | s=INT RANGE e=INT {$expr = new RangeExpr(Integer.parseInt($s.text), Integer.parseInt($e.text));}
     | INT {$expr = new IntExpr(Integer.parseInt($INT.text));}
     | ID {$expr = new VarExpr($ID.text);}
+    | TRUE {$expr = new BoolExpr(true);}
+    | FALSE {$expr = new BoolExpr(false);}
+    | BREAK {$expr = new BreakExpr(); }
     | fc=functionCall {$expr = $fc.expr;}
     | el=expression PLUS er=expression {$expr = new BinaryExpr($el.expr, "+", $er.expr);}
     | el=expression MINUS er=expression {$expr = new BinaryExpr($el.expr, "-", $er.expr);}
@@ -107,6 +111,17 @@ ifBlock returns [Expression expr]
       }
     ;
 
+whileBlock returns [Expression expr]
+    :
+    {
+        List<Expression> whileBody = new ArrayList<Expression>();
+    }
+    WHILE LPARAN cond=expression RPARAN OBLOCK (stmt=statement {whileBody.add($stmt.expr);})* EBLOCK
+    {
+        $expr = new WhileExpr($cond.expr, new BlockExpr(whileBody));
+    }
+    ;
+
 
 args returns [List<Expression> exprList]
     : {$exprList = new ArrayList<>();}
@@ -145,7 +160,12 @@ RANGE : '..';
 FUNC : 'function' ;
 IF : 'if' ;
 ELSE : 'else' ;
-ELSEIF : 'else if';
+ELSEIF : 'else if' ;
+WHILE : 'while' ;
+BREAK : 'break';
+
+TRUE : 'true'|'True';
+FALSE : 'false'|'False';
 
 PRINT : 'print' ;
 

@@ -1,0 +1,9 @@
+testing = 0
+while(testing < 10) {
+    funnyNumber = 69
+    testing = testing + 1
+    funnyNumber = funnyNumber - 1
+    print("Funny Number: " ++ funnyNumber ++ " | Testing: " ++ testing)
+}
+
+print(testing)

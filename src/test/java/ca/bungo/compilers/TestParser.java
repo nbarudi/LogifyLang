@@ -35,9 +35,18 @@ public class TestParser {
     }
 
     @Test
-    public void ifElse() throws  IOException{
-
+    public void ifElse() throws  IOException {
         evalFile("ifElse.logify");
+    }
+
+    @Test
+    public void whileLoop() throws IOException {
+        evalFile("whileLoop.logify");
+    }
+
+    @Test
+    public void breakLoop() throws IOException {
+        evalFile("breakLoop.logify");
     }
 
     void evalFile(String fileName) throws IOException {

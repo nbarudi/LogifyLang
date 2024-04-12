@@ -1,10 +1,7 @@
 package ca.bungo.compilers.logic.expressions
 
 import ca.bungo.compilers.logic.Runtime
-import ca.bungo.compilers.logic.data.Data
-import ca.bungo.compilers.logic.data.IntData
-import ca.bungo.compilers.logic.data.None
-import ca.bungo.compilers.logic.data.RangeData
+import ca.bungo.compilers.logic.data.*
 
 class ForLoopExpr(val index: String, val conditional: Expression, val body: List<Expression>) : Expression() {
 
@@ -17,6 +14,12 @@ class ForLoopExpr(val index: String, val conditional: Expression, val body: List
             scope.parent = runtime
             for(stmt in body){
                 lastEval = stmt.evaluate(scope)
+                if(lastEval is BreakData)
+                    break
+            }
+            if(lastEval is BreakData){
+                lastEval = None
+                break
             }
 
         }

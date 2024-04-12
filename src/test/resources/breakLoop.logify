@@ -1,0 +1,20 @@
+loop = 0
+while(true) {
+    loop = loop + 1
+    if(loop == 5){
+        break
+    }
+    print(loop)
+}
+
+print("Loop: " ++ loop)
+
+for(index in 1..100){
+    if(index == 16) {
+        print("Begone!")
+        break
+    }
+    print(index)
+}
+
+print("End of code!")
