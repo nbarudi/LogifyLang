@@ -48,6 +48,30 @@ class BinaryExpr(val left: Expression, val op: String, val right: Expression): E
                 }
                 throw RuntimeException("Bad Argument. Not a number!")
             }
+            ">" -> {
+                if(leftValue is IntData){
+                    return BooleanData(leftValue.value > rightValue.value)
+                }
+                throw RuntimeException("Bad Argument. Not a number!")
+            }
+            "==" -> {
+                if(leftValue is IntData){
+                    return BooleanData(leftValue.value == rightValue.value)
+                }
+                throw RuntimeException("Bad Argument. Not a number!")
+            }
+            "<=" -> {
+                if(leftValue is IntData){
+                    return BooleanData(leftValue.value <= rightValue.value)
+                }
+                throw RuntimeException("Bad Argument. Not a number!")
+            }
+            ">=" -> {
+                if(leftValue is IntData){
+                    return BooleanData(leftValue.value >= rightValue.value)
+                }
+                throw RuntimeException("Bad Argument. Not a number!")
+            }
             else -> throw RuntimeException("Unsupported Operator : $op")
         }
     }
