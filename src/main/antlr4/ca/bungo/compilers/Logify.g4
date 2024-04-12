@@ -79,13 +79,20 @@ ifBlock returns [Expression expr]
         List<Expression> thenExprs = new ArrayList<>();
         List<Expression> elseIfExprs = new ArrayList<>();
         List<Expression> elseExprs = new ArrayList<>();
+        List<Expression> elseStmnts = new ArrayList<>();
     }
     IF LPARAN cond=expression RPARAN OBLOCK
         (thenStmt=statement { thenExprs.add($thenStmt.expr); })*
       EBLOCK
       (ELSEIF LPARAN elseifCond=expression RPARAN OBLOCK
-        (elseifStmt=statement { elseIfExprs.add($elseifStmt.expr); })*
-      EBLOCK)*
+        (elseifStmt=statement { elseStmnts.add($elseifStmt.expr); })*
+      EBLOCK
+      {
+        if(!elseStmnts.isEmpty()) {
+            elseIfExprs.add(new IfElseExpr($elseifCond.expr, new BlockExpr(new ArrayList<>(elseStmnts))));
+            elseStmnts.clear();
+        }
+      })*
       (ELSE OBLOCK
         (elseStmt=statement { elseExprs.add($elseStmt.expr); })*
       EBLOCK)?

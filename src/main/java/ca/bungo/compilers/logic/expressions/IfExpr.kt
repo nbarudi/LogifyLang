@@ -12,12 +12,10 @@ class IfExpr(val condition: Expression, val thenExpr: Expression, val elseIfExpr
         if (condRes is BooleanData && condRes.value) {
             return thenExpr.evaluate(runtime)
         } else {
-            if(elseIfExprs.isNotEmpty()){
-                for (elseIfExpr in elseIfExprs) {
-                    val elseIfCondRes = elseIfExpr.evaluate(runtime)
-                    if (elseIfCondRes is None) {
-                        return elseIfExpr.evaluate(runtime)
-                    }
+            for (elseIfExpr in elseIfExprs) {
+                val elseIfCondRes = elseIfExpr.evaluate(runtime)
+                if (elseIfCondRes !is None) {
+                    return elseIfExpr.evaluate(runtime)
                 }
             }
             return elseExpr?.evaluate(runtime) ?: None
