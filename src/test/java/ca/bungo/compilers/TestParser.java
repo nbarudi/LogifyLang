@@ -34,6 +34,11 @@ public class TestParser {
         evalFile("factorial.logify");
     }
 
+    @Test
+    public void ifElse() throws  IOException{
+
+        evalFile("ifElse.logify");
+    }
 
     void evalFile(String fileName) throws IOException {
         Lexer lexer = new LogifyLexer(CharStreams.fromStream(

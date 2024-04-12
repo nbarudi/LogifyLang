@@ -1,0 +1,15 @@
+function if_else(n) {
+  if (n < 2) {
+    print("less than")
+  } else if (n > 2) {
+    print("greater than")
+  } else {
+    print("equal to")
+  }
+}
+
+print(if_else(1));
+print(if_else(3));
+print(if_else(2));
+
+

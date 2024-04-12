@@ -54,6 +54,10 @@ expression returns [Expression expr]
     | el=expression DIV er=expression {$expr = new BinaryExpr($el.expr, "/", $er.expr);}
     | el=expression CONCAT er=expression {$expr = new ConcatExpr($el.expr, $er.expr);}
     | el=expression LT er=expression {$expr = new BinaryExpr($el.expr, "<", $er.expr);}
+    | el=expression LTE er=expression {$expr = new BinaryExpr($el.expr, "<=", $er.expr);}
+    | el=expression GT er=expression {$expr = new BinaryExpr($el.expr, ">", $er.expr);}
+    | el=expression GTE er=expression {$expr = new BinaryExpr($el.expr, ">=", $er.expr);}
+    | el=expression EQ er=expression {$expr = new BinaryExpr($el.expr, "==", $er.expr);}
     | LPARAN expression RPARAN {$expr = $expression.expr;}
     ;
 
@@ -73,21 +77,29 @@ ifBlock returns [Expression expr]
     :
     {
         List<Expression> thenExprs = new ArrayList<>();
+        List<Expression> elseIfExprs = new ArrayList<>();
         List<Expression> elseExprs = new ArrayList<>();
     }
-    IF LPARAN cond=expression RPARAN OBLOCK (stmt=statement {thenExprs.add($stmt.expr);})* EBLOCK
-      (ELSE OBLOCK (stmt=statement {elseExprs.add($stmt.expr);})* EBLOCK)?
+    IF LPARAN cond=expression RPARAN OBLOCK
+        (thenStmt=statement { thenExprs.add($thenStmt.expr); })*
+      EBLOCK
+      (ELSEIF LPARAN elseifCond=expression RPARAN OBLOCK
+        (elseifStmt=statement { elseIfExprs.add($elseifStmt.expr); })*
+      EBLOCK)*
+      (ELSE OBLOCK
+        (elseStmt=statement { elseExprs.add($elseStmt.expr); })*
+      EBLOCK)?
       {
           Expression thenExpr = new BlockExpr(thenExprs);
-
           Expression elseExpr = null;
           if (!elseExprs.isEmpty()) {
               elseExpr = new BlockExpr(elseExprs);
           }
 
-          $expr = new IfExpr($cond.expr, thenExpr, elseExpr);
+          $expr = new IfExpr($cond.expr, thenExpr, elseIfExprs, elseExpr);
       }
     ;
+
 
 args returns [List<Expression> exprList]
     : {$exprList = new ArrayList<>();}
@@ -102,6 +114,7 @@ print returns [Expression expr]
 COMMA : ',' ;
 LPARAN : '(' ;
 RPARAN : ')';
+EQ : '==' ;
 EQL : '=' ;
 SEMI : ';' ;
 
@@ -113,6 +126,9 @@ MINUS : '-' ;
 MULT : '*' ;
 DIV : '/' ;
 LT : '<' ;
+GT : '>' ;
+LTE : '<=' ;
+GTE : '>=' ;
 
 CONCAT : '++';
 
@@ -122,6 +138,7 @@ RANGE : '..';
 FUNC : 'function' ;
 IF : 'if' ;
 ELSE : 'else' ;
+ELSEIF : 'else if';
 
 PRINT : 'print' ;
 
