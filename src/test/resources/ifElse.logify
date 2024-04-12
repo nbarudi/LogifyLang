@@ -1,0 +1,17 @@
+function if_else(n) {
+  if (n < 2) {
+    "less than";
+  } else if (n == 2) {
+    "equal to 2";
+  } else if (n == 3) {
+    "equal to 3";
+  }
+  else {
+    "greater than";
+  }
+}
+
+print(if_else(1));
+print(if_else(3));
+print(if_else(2));
+print(if_else(4));
