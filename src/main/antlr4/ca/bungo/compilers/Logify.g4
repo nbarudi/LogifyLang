@@ -71,6 +71,7 @@ expression returns [Expression expr]
     | sort SEMI? {$expr = $sort.expr;}
     | reverse SEMI? {$expr = $reverse.expr;}
     | mean SEMI? {$expr = $mean.expr;}
+    | length SEMI? {$expr = $length.expr;}
     | fc=functionCall {$expr = $fc.expr;}
     | ID {$expr = new VarExpr($ID.text);}
     | TRUE {$expr = new BoolExpr(true);}
@@ -180,6 +181,10 @@ mean returns [Expression expr]
     : MEAN LPARAN e=expression RPARAN {$expr = new MeanExpr($e.expr);}
     ;
 
+length returns [Expression expr]
+    : LENGTH LPARAN e=expression RPARAN {$expr = new LengthExpr($e.expr);}
+    ;
+
 COMMA : ',' ;
 LPARAN : '(' ;
 RPARAN : ')';
@@ -224,6 +229,7 @@ SUM : 'sum' ;
 MEAN : 'mean' ;
 SORT : 'sort' ;
 REVERSE : 'reverse' ;
+LENGTH : 'length' ;
 
 STRING : '"' ( ~["\r\n] | ' ')+ '"' ;
 INT : [0-9]+ ;

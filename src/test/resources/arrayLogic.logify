@@ -5,3 +5,5 @@ list[2] = 3
 print(list)
 
 print(list[0])
+
+print("Array Size: " ++ length(list))
