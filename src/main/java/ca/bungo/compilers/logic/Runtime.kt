@@ -10,7 +10,7 @@ class Runtime(var parent: Runtime? = null) {
     fun subscope(bindings:Map<String, Data>):Runtime {
         val parentSymbolTable = this.symbolTable
         return Runtime().apply {
-            symbolTable.putAll(parentSymbolTable)
+            //symbolTable.putAll(parentSymbolTable)
             symbolTable.putAll(bindings)
         }
     }
@@ -37,6 +37,7 @@ class Runtime(var parent: Runtime? = null) {
         }
 
         val newScope = subscope(function.params.zip(args).toMap())
+        newScope.parent = this
         return function.body.evaluate(newScope)
 
     }

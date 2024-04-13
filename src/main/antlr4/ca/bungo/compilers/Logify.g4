@@ -29,9 +29,9 @@ statement returns [Expression expr]
 
 forLoop returns [Expression expr]
     :  {List<Expression> loopStmts = new ArrayList<>();}
-    FOR LPARAN ID IN e=expression RPARAN OBLOCK (stmt=statement {loopStmts.add($stmt.expr);})* EBLOCK
+    FOR LPARAN a=assignment SPLIT cond=expression RPARAN OBLOCK (stmt=statement {loopStmts.add($stmt.expr);})* EBLOCK
       {
-          $expr = new ForLoopExpr($ID.text, $e.expr, loopStmts);
+          $expr = new ForLoopExpr($a.expr, $cond.expr, new BlockExpr(loopStmts));
       }
     ;
 
@@ -54,7 +54,7 @@ arrayRef returns [Expression expr]
 
 expression returns [Expression expr]
     : STRING {$expr = new StringExpr($STRING.text.substring(1, $STRING.text.length() - 1));}
-    | s=INT RANGE e=INT {$expr = new RangeExpr(Integer.parseInt($s.text), Integer.parseInt($e.text));}
+    //| s=INT RANGE e=INT {$expr = new RangeExpr(Integer.parseInt($s.text), Integer.parseInt($e.text));}
     | INT {$expr = new IntExpr(Integer.parseInt($INT.text));}
     | DECIMAL {$expr = new DecimalExpr(Double.parseDouble($DECIMAL.text));}
     | ar=arrayRef {$expr = $ar.expr;}
@@ -197,7 +197,8 @@ CONCAT : '++';
 
 FOR : 'for' ;
 IN : 'in' ;
-RANGE : '..';
+//RANGE : '..';
+SPLIT : ' | ' ;
 FUNC : 'function' ;
 IF : 'if' ;
 ELSE : 'else' ;

@@ -9,12 +9,13 @@ while(true) {
 
 print("Loop: " ++ loop)
 
-for(index in 1..100){
+for(index = 0 | index < 100){
     if(index == 16) {
         print("Begone!")
         break
     }
     print(index)
+    index = index + 1
 }
 
 print("End of code!")
