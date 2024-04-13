@@ -58,26 +58,26 @@ expression returns [Expression expr]
     | INT {$expr = new IntExpr(Integer.parseInt($INT.text));}
     | DECIMAL {$expr = new DecimalExpr(Double.parseDouble($DECIMAL.text));}
     | ar=arrayRef {$expr = $ar.expr;}
-    | ID {$expr = new VarExpr($ID.text);}
-    | TRUE {$expr = new BoolExpr(true);}
-    | FALSE {$expr = new BoolExpr(false);}
-    | BREAK {$expr = new BreakExpr(); }
-    | ab=arrayBlock {$expr = new ArrayExpr($ab.exprList);}
     | sum SEMI? {$expr = $sum.expr;}
     | sort SEMI? {$expr = $sort.expr;}
     | reverse SEMI? {$expr = $reverse.expr;}
     | mean SEMI? {$expr = $mean.expr;}
     | fc=functionCall {$expr = $fc.expr;}
+    | ID {$expr = new VarExpr($ID.text);}
+    | TRUE {$expr = new BoolExpr(true);}
+    | FALSE {$expr = new BoolExpr(false);}
+    | BREAK {$expr = new BreakExpr(); }
+    | ab=arrayBlock {$expr = new ArrayExpr($ab.exprList);}
     | el=expression PLUS er=expression {$expr = new BinaryExpr($el.expr, "+", $er.expr);}
     | el=expression MINUS er=expression {$expr = new BinaryExpr($el.expr, "-", $er.expr);}
     | el=expression MULT er=expression {$expr = new BinaryExpr($el.expr, "*", $er.expr);}
     | el=expression DIV er=expression {$expr = new BinaryExpr($el.expr, "/", $er.expr);}
     | el=expression CONCAT er=expression {$expr = new ConcatExpr($el.expr, $er.expr);}
-    | el=expression LT er=expression {$expr = new BinaryExpr($el.expr, "<", $er.expr);}
-    | el=expression LTE er=expression {$expr = new BinaryExpr($el.expr, "<=", $er.expr);}
-    | el=expression GT er=expression {$expr = new BinaryExpr($el.expr, ">", $er.expr);}
-    | el=expression GTE er=expression {$expr = new BinaryExpr($el.expr, ">=", $er.expr);}
-    | el=expression EQ er=expression {$expr = new BinaryExpr($el.expr, "==", $er.expr);}
+    | el=expression LT er=expression {$expr = new ConditionalExpr($el.expr, "<", $er.expr);}
+    | el=expression LTE er=expression {$expr = new ConditionalExpr($el.expr, "<=", $er.expr);}
+    | el=expression GT er=expression {$expr = new ConditionalExpr($el.expr, ">", $er.expr);}
+    | el=expression GTE er=expression {$expr = new ConditionalExpr($el.expr, ">=", $er.expr);}
+    | el=expression EQ er=expression {$expr = new ConditionalExpr($el.expr, "==", $er.expr);}
     | LPARAN expression RPARAN {$expr = $expression.expr;}
     ;
 

@@ -1,6 +1,6 @@
-sum = 0
+num = 0
 for(i in 10..20) {
-  sum = sum + i;
+  num = num + i;
 }
 
-print(sum)
+print(num)
