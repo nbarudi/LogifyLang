@@ -51,6 +51,7 @@ expression returns [Expression expr]
     | TRUE {$expr = new BoolExpr(true);}
     | FALSE {$expr = new BoolExpr(false);}
     | BREAK {$expr = new BreakExpr(); }
+    | ab=arrayBlock {$expr = new ArrayExpr($ab.exprList);}
     | fc=functionCall {$expr = $fc.expr;}
     | el=expression PLUS er=expression {$expr = new BinaryExpr($el.expr, "+", $er.expr);}
     | el=expression MINUS er=expression {$expr = new BinaryExpr($el.expr, "-", $er.expr);}
@@ -63,6 +64,12 @@ expression returns [Expression expr]
     | el=expression GTE er=expression {$expr = new BinaryExpr($el.expr, ">=", $er.expr);}
     | el=expression EQ er=expression {$expr = new BinaryExpr($el.expr, "==", $er.expr);}
     | LPARAN expression RPARAN {$expr = $expression.expr;}
+    ;
+
+arrayBlock returns [List<Expression> exprList]
+    : {$exprList = new ArrayList<>(); }
+    OARRAY (e1=expression {$exprList.add($e1.expr);}
+     (COMMA e2=expression {$exprList.add($e2.expr);})*)? EARRAY
     ;
 
 functionCall returns [Expression expr]
@@ -142,6 +149,9 @@ SEMI : ';' ;
 
 OBLOCK : '{' ;
 EBLOCK : '}' ;
+
+OARRAY : '[' ;
+EARRAY : ']' ;
 
 PLUS : '+' ;
 MINUS : '-' ;

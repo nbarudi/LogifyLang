@@ -1,0 +1,3 @@
+list = [1,2, "Random word section for no reason" ,4, 10 > 100,6,7,8,9,10]
+
+print(list)
