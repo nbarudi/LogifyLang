@@ -56,12 +56,17 @@ expression returns [Expression expr]
     : STRING {$expr = new StringExpr($STRING.text.substring(1, $STRING.text.length() - 1));}
     | s=INT RANGE e=INT {$expr = new RangeExpr(Integer.parseInt($s.text), Integer.parseInt($e.text));}
     | INT {$expr = new IntExpr(Integer.parseInt($INT.text));}
+    | DECIMAL {$expr = new DecimalExpr(Double.parseDouble($DECIMAL.text));}
     | ar=arrayRef {$expr = $ar.expr;}
     | ID {$expr = new VarExpr($ID.text);}
     | TRUE {$expr = new BoolExpr(true);}
     | FALSE {$expr = new BoolExpr(false);}
     | BREAK {$expr = new BreakExpr(); }
     | ab=arrayBlock {$expr = new ArrayExpr($ab.exprList);}
+    | sum SEMI? {$expr = $sum.expr;}
+    | sort SEMI? {$expr = $sort.expr;}
+    | reverse SEMI? {$expr = $reverse.expr;}
+    | mean SEMI? {$expr = $mean.expr;}
     | fc=functionCall {$expr = $fc.expr;}
     | el=expression PLUS er=expression {$expr = new BinaryExpr($el.expr, "+", $er.expr);}
     | el=expression MINUS er=expression {$expr = new BinaryExpr($el.expr, "-", $er.expr);}
@@ -150,6 +155,22 @@ print returns [Expression expr]
     : PRINT LPARAN e=expression RPARAN {$expr = new PrintExpr($e.expr);}
     ;
 
+sum returns [Expression expr]
+    : SUM LPARAN e=expression RPARAN {$expr = new SumExpr($e.expr);}
+    ;
+
+sort returns [Expression expr]
+    : SORT LPARAN e=expression RPARAN {$expr = new SortExpr($e.expr);}
+    ;
+
+reverse returns [Expression expr]
+    : REVERSE LPARAN e=expression RPARAN {$expr = new ReverseExpr($e.expr);}
+    ;
+
+mean returns [Expression expr]
+    : MEAN LPARAN e=expression RPARAN {$expr = new MeanExpr($e.expr);}
+    ;
+
 COMMA : ',' ;
 LPARAN : '(' ;
 RPARAN : ')';
@@ -188,8 +209,13 @@ TRUE : 'true'|'True';
 FALSE : 'false'|'False';
 
 PRINT : 'print' ;
+SUM : 'sum' ;
+MEAN : 'mean' ;
+SORT : 'sort' ;
+REVERSE : 'reverse' ;
 
 STRING : '"' ( ~["\r\n] | ' ')+ '"' ;
 INT : [0-9]+ ;
+DECIMAL : [0-9]+ '.' [0-9]+;
 ID: [a-zA-Z_][a-zA-Z_0-9]* ;
 WHITESPACE : [ \t\r\n] -> skip;

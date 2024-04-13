@@ -54,6 +54,11 @@ public class TestParser {
         evalFile("arrayLogic.logify");
     }
 
+    @Test
+    public void aggData() throws IOException {
+        evalFile("aggData.logify");
+    }
+
     void evalFile(String fileName) throws IOException {
         Lexer lexer = new LogifyLexer(CharStreams.fromStream(
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName))));

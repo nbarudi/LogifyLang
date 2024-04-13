@@ -1,0 +1,21 @@
+safeArray = [1,2,3.14,4,5,6,7,8,9]
+dangerArray = [1,2,3,4,5,"bad words",7]
+
+print(safeArray ++ " | " ++ dangerArray)
+
+reverseSafe = reverse(safeArray)
+reverseDanger = reverse(dangerArray)
+
+print(reverseSafe ++ " | " ++ reverseDanger)
+
+meanSafe = mean(reverseSafe)
+
+print(meanSafe)
+
+sortedSafe = sort(reverseSafe)
+
+print(sortedSafe)
+
+sumSafe = sum(safeArray)
+
+print(sumSafe)
