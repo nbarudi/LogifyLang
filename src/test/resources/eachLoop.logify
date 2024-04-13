@@ -1,0 +1,7 @@
+dummyArray = [1,2,3,4,5,6,"Non Number Logic",8,9,10]
+
+each(item in dummyArray){
+    print(item)
+}
+
+print(dummyArray)

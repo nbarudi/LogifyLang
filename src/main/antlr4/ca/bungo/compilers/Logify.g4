@@ -18,6 +18,7 @@ program returns [Expression expr]
 statement returns [Expression expr]
     : a=assignment {$expr = $a.expr;}
     | aa=arrayAssignment {$expr = $aa.expr;}
+    | el=eachLoop {$expr = $el.expr;}
     | f=forLoop {$expr = $f.expr;}
     | wl=whileBlock {$expr = $wl.expr;}
     | fd=functionDef {$expr = $fd.expr;}
@@ -32,6 +33,14 @@ forLoop returns [Expression expr]
     FOR LPARAN a=assignment SPLIT cond=expression RPARAN OBLOCK (stmt=statement {loopStmts.add($stmt.expr);})* EBLOCK
       {
           $expr = new ForLoopExpr($a.expr, $cond.expr, new BlockExpr(loopStmts));
+      }
+    ;
+
+eachLoop returns [Expression expr]
+    :  {List<Expression> loopStmts = new ArrayList<>();}
+    EACH LPARAN ID IN cond=expression RPARAN OBLOCK (stmt=statement {loopStmts.add($stmt.expr);})* EBLOCK
+      {
+          $expr = new EachLoopExpr($ID.text, $cond.expr, new BlockExpr(loopStmts));
       }
     ;
 
@@ -196,6 +205,7 @@ GTE : '>=' ;
 CONCAT : '++';
 
 FOR : 'for' ;
+EACH : 'each' ;
 IN : 'in' ;
 //RANGE : '..';
 SPLIT : ' | ' ;
