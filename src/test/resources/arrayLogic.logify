@@ -1,3 +1,7 @@
 list = [1,2, "Random word section for no reason" ,4, 10 > 100,6,7,8,9,10]
-
 print(list)
+
+list[2] = 3
+print(list)
+
+print(list[0])

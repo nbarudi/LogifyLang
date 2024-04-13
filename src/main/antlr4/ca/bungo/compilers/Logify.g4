@@ -17,6 +17,7 @@ program returns [Expression expr]
 
 statement returns [Expression expr]
     : a=assignment {$expr = $a.expr;}
+    | aa=arrayAssignment {$expr = $aa.expr;}
     | f=forLoop {$expr = $f.expr;}
     | wl=whileBlock {$expr = $wl.expr;}
     | fd=functionDef {$expr = $fd.expr;}
@@ -43,10 +44,19 @@ assignment returns [Expression expr]
     : ID EQL expression SEMI? {$expr = new AssignExpr($ID.text, $expression.expr);}
     ;
 
+arrayAssignment returns [Expression expr]
+    : ID OARRAY idx=expression EARRAY EQL e1=expression SEMI? {$expr = new ArrayAssignExpr($ID.text, $idx.expr, $e1.expr);}
+    ;
+
+arrayRef returns [Expression expr]
+    : ID OARRAY exp=expression EARRAY SEMI? {$expr = new ArrayVarExpr($ID.text, $exp.expr);}
+    ;
+
 expression returns [Expression expr]
     : STRING {$expr = new StringExpr($STRING.text.substring(1, $STRING.text.length() - 1));}
     | s=INT RANGE e=INT {$expr = new RangeExpr(Integer.parseInt($s.text), Integer.parseInt($e.text));}
     | INT {$expr = new IntExpr(Integer.parseInt($INT.text));}
+    | ar=arrayRef {$expr = $ar.expr;}
     | ID {$expr = new VarExpr($ID.text);}
     | TRUE {$expr = new BoolExpr(true);}
     | FALSE {$expr = new BoolExpr(false);}

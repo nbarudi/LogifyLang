@@ -8,7 +8,7 @@ class ArrayExpr(var expressions: List<Expression>) : Expression() {
 
     override fun evaluate(runtime: Runtime?): Data {
         val arrayData: List<Data> = expressions.map { expression -> expression.evaluate(runtime) }
-        return ArrayData(arrayData)
+        return ArrayData(arrayData.toMutableList())
     }
 
 }

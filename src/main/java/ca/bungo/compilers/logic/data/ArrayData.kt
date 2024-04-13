@@ -1,6 +1,6 @@
 package ca.bungo.compilers.logic.data
 
-class ArrayData(var data: List<Data> ) : Data() {
+class ArrayData(var data: MutableList<Data>) : Data() {
 
     override fun toString(): String {
         var array = "["
