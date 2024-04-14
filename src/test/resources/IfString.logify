@@ -1,0 +1,11 @@
+function if_string(n) {
+  if (n == "example"){
+    "string matches";
+  }
+  else {
+    "string does not match";
+  }
+}
+
+print(if_string("example"));
+print(if_string("not example"));

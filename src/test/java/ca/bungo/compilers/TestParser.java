@@ -40,6 +40,11 @@ public class TestParser {
     }
 
     @Test
+    public void IfString() throws IOException{
+        evalFile("IfString.logify");
+    }
+
+    @Test
     public void whileLoop() throws IOException {
         evalFile("whileLoop.logify");
     }
